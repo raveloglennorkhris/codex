@@ -78,7 +78,7 @@ const handleSubmit = async (e) => {
   } 
 
   // user's chatstripe
-  chatContainer.inner  
+  //chatContainer.inner  
 
   form.reset();
 
