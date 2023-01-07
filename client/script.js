@@ -64,11 +64,11 @@ const handleSubmit = async (e) => {
 
   // Check for keywords indicating a request for the current date
   const userInput = data.get('prompt');
-  if ((userInput.includes('today') || userInput.includes('date') || userInput.includes('day')) && ((userInput.includes('now') || userInput.includes('time') || userInput.includes('hour')))) {
+  if (userInput.includes('today') || userInput.includes('date') || userInput.includes('day')) {
   // Retrieve the current date and format it as a string
     const now = new Date();
     const dateString = now.toLocaleDateString();
-    const timeString = now.toLocaleTimeString();
+    //const timeString = now.toLocaleTimeString();
   } 
 
   // user's chatstripe
@@ -80,7 +80,6 @@ const handleSubmit = async (e) => {
   const uniqueId = generateUniqueId();
   chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
 
-  //chatContainer.scrollTop = chatContainer.scrollHeight;
   chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
 
   const messageDiv = document.getElementById(uniqueId);
