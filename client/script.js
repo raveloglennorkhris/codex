@@ -62,71 +62,58 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
-  // Check for keywords indicating a request for the current date
-  //const userInput = data.get('prompt');
-  if (userInput.includes('today') || userInput.includes('date') || userInput.includes('day')) {
-    // Retrieve the current date and format it as a string
-    const now = new Date();
-    const dateString = now.toLocaleDateString();
+  // user's chatstripe
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
 
-  // Add a chat stripe to the chat container with the current date 
-    chatContainer.innerHTML += chatStripe(true, `The current date is: ${dateString}`);
-  } else {
+  form.reset();
 
-    // user's chatstripe
-    chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  // bot's chatstripe
+  const uniqueId = generateUniqueId();
+  chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
 
-    form.reset();
+  chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
 
-    // bot's chatstripe
-    const uniqueId = generateUniqueId();
-    chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
+  const messageDiv = document.getElementById(uniqueId);
 
-    chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
+  loader(messageDiv);
 
-    const messageDiv = document.getElementById(uniqueId);
-
-    loader(messageDiv);
-
-    // fetch data from server -> bot's response
+  // fetch data from server -> bot's response
   
-    try {
-      const response = await fetch('https://codex-hdtm.onrender.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+  try {
+    const response = await fetch('https://codex-hdtm.onrender.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
           prompt: data.get('prompt')
-        }) 
-      })  
+      }) 
+    })  
 
-      clearInterval(loadInterval);
-      messageDiv.innerHTML = '';  
+    clearInterval(loadInterval);
+    messageDiv.innerHTML = '';  
 
-      if(response.ok) {
-        const data = await response.json();
-        const parsedData = data.bot.trim();
+    if(response.ok) {
+      const data = await response.json();
+      const parsedData = data.bot.trim();
 
       // To trace error location
       //console.log({parsedData})
 
-        typeText(messageDiv, parsedData);
-      } else {
-        throw new Error(await response.text());
-      }
-    } catch (error) { 
-      
-  } 
+      typeText(messageDiv, parsedData);
+    } else {
+      throw new Error(await response.text());
+    }
+  } catch (error) {       
 
-  // user's chatstripe
-  //chatContainer.inner  
+    // user's chatstripe
+    //chatContainer.inner  
 
-  clearInterval(loadInterval);  
-  messageDiv.innerHTML = '';
-  messageDiv.innerHTML = "Something went wrong";
+    clearInterval(loadInterval);  
+    messageDiv.innerHTML = '';
+    messageDiv.innerHTML = "Something went wrong";
 
-  alert(error);    
+    alert(error);    
   } 
 }
 
