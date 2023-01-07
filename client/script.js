@@ -62,6 +62,15 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
+  // Check for keywords indicating a request for the current date
+  const userInput = data.get('prompt');
+  if ((userInput.includes('today') || userInput.includes('date') || userInput.includes('day')) && ((userInput.includes('now') || userInput.includes('time') || userInput.includes('hour')))) {
+  // Retrieve the current date and format it as a string
+    const now = new Date();
+    const dateString = now.toLocaleDateString();
+    const timeString = now.toLocaleTimeString();
+  } 
+
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
 
@@ -71,42 +80,48 @@ const handleSubmit = async (e) => {
   const uniqueId = generateUniqueId();
   chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
 
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  //chatContainer.scrollTop = chatContainer.scrollHeight;
+  chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
 
   const messageDiv = document.getElementById(uniqueId);
 
   loader(messageDiv);
 
   // fetch data from server -> bot's response
+  
+  try {
+    const response = await fetch('https://codex-hdtm.onrender.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        prompt: data.get('prompt')
+      }) 
+    })  
 
-  const response = await fetch('https://codex-hdtm.onrender.com', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      prompt: data.get('prompt')
-    }) 
-  })  
+    clearInterval(loadInterval);
+    messageDiv.innerHTML = '';  
 
-  clearInterval(loadInterval);
-  messageDiv.innerHTML = '';  
-
-  if(response.ok) {
-    const data = await response.json();
-    const parsedData = data.bot.trim();
+    if(response.ok) {
+      const data = await response.json();
+      const parsedData = data.bot.trim();
 
     // To trace error location
     //console.log({parsedData})
 
-    typeText(messageDiv, parsedData);
-  } else {
-    const err = await response.text();
+      typeText(messageDiv, parsedData);
+    } else {
+      throw new Error(await response.text());
+    }
+  } catch (error) { 
+    
+  clearInterval(loadInterval);  
+  messageDiv.innerHTML = '';
+  messageDiv.innerHTML = "Something went wrong";
 
-    messageDiv.innerHTML = "Something went wrong";
-
-    alert(err);    
-  }
+  alert(error);    
+  } 
 }
 
 form.addEventListener('submit', handleSubmit);
@@ -114,4 +129,4 @@ form.addEventListener('keyup', (e) => {
   if (e.keyCode === 13) {
     handleSubmit(e);
   }
-})
+});
