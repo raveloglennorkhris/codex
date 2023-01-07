@@ -4,7 +4,36 @@ import user from './assets/user.svg';
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
 
+const refreshButton = document.querySelector('#refresh_button');
+const newChatButton = document.querySelector('#new_chat_button');
+
+refreshButton.addEventListener('click', startNewChat);
+newChatButton.addEventListener('click', startNewChat);;
+
 let loadInterval;
+
+function startNewChat() {
+  // clear chat messages
+  const chatMessages = document.querySelectorAll('.chat');
+  chatMessages.forEach(message => message.remove());
+
+  // reset chat form
+  const chatForm = document.querySelector('form');
+  const chatInput = document.querySelector('textarea');
+  chatInput.value = '';
+  chatInput.focus();
+
+  // reset chat history or conversation context
+  chatHistory = [];
+  conversationContext = {
+    topic: '',
+    mood: 'neutral',
+    userName: '',
+    userAge: 0,
+    userGender: '',
+    userLocation: '',
+  };
+}
 
 function loader(element) {
   element.textContent = '';  
