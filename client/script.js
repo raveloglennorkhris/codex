@@ -71,15 +71,10 @@ const handleSubmit = async (e) => {
 
   // Add a chat stripe to the chat container with the current date 
     chatContainer.innerHTML += chatStripe(true, `The current date is: ${dateString}`);
-  } 
-  //else {
+  } else {
 
   // user's chatstripe
-  //chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
-  //} 
-
-  // user's chatstripe
-  //chatContainer.inner  
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
 
   form.reset();
 
@@ -95,33 +90,38 @@ const handleSubmit = async (e) => {
 
   // fetch data from server -> bot's response
   
-  try {
-    const response = await fetch('https://codex-hdtm.onrender.com', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        prompt: data.get('prompt')
-      }) 
-    })  
+    try {
+      const response = await fetch('https://codex-hdtm.onrender.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          prompt: data.get('prompt')
+        }) 
+      })  
 
-    clearInterval(loadInterval);
-    messageDiv.innerHTML = '';  
+      clearInterval(loadInterval);
+      messageDiv.innerHTML = '';  
 
-    if(response.ok) {
-      const data = await response.json();
-      const parsedData = data.bot.trim();
+      if(response.ok) {
+        const data = await response.json();
+        const parsedData = data.bot.trim();
 
-    // To trace error location
-    //console.log({parsedData})
+      // To trace error location
+      //console.log({parsedData})
 
-      typeText(messageDiv, parsedData);
-    } else {
-      throw new Error(await response.text());
-    }
-  } catch (error) { 
-    
+        typeText(messageDiv, parsedData);
+      } else {
+        throw new Error(await response.text());
+      }
+    } catch (error) { 
+      
+  } 
+
+  // user's chatstripe
+  //chatContainer.inner  
+
   clearInterval(loadInterval);  
   messageDiv.innerHTML = '';
   messageDiv.innerHTML = "Something went wrong";
