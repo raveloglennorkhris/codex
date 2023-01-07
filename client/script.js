@@ -63,7 +63,7 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // Check for keywords indicating a request for the current date
-  const userInput = data.get('prompt');
+  //const userInput = data.get('prompt');
   if (userInput.includes('today') || userInput.includes('date') || userInput.includes('day')) {
     // Retrieve the current date and format it as a string
     const now = new Date();
