@@ -69,13 +69,16 @@ const handleSubmit = async (e) => {
     const now = new Date();
     const dateString = now.toLocaleDateString();
 
-  // user's chatstripe    
+  // Add a chat stripe to the chat container with the current date 
     chatContainer.innerHTML += chatStripe(true, `The current date is: ${dateString}`);
   } else {
 
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   } 
+
+  // user's chatstripe
+  chatContainer.inner  
 
   form.reset();
 
