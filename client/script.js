@@ -65,17 +65,18 @@ const handleSubmit = async (e) => {
   // Check for keywords indicating a request for the current date
   const userInput = data.get('prompt');
   if (userInput.includes('today') || userInput.includes('date') || userInput.includes('day')) {
-  // Retrieve the current date and format it as a string
+    // Retrieve the current date and format it as a string
     const now = new Date();
     const dateString = now.toLocaleDateString();
 
   // Add a chat stripe to the chat container with the current date 
     chatContainer.innerHTML += chatStripe(true, `The current date is: ${dateString}`);
-  } else {
+  } 
+  //else {
 
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
-  } 
+  //chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  //} 
 
   // user's chatstripe
   //chatContainer.inner  
