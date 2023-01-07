@@ -73,22 +73,22 @@ const handleSubmit = async (e) => {
     chatContainer.innerHTML += chatStripe(true, `The current date is: ${dateString}`);
   } else {
 
-  // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+    // user's chatstripe
+    chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
 
-  form.reset();
+    form.reset();
 
-  // bot's chatstripe
-  const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
+    // bot's chatstripe
+    const uniqueId = generateUniqueId();
+    chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
 
-  chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
+    chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
 
-  const messageDiv = document.getElementById(uniqueId);
+    const messageDiv = document.getElementById(uniqueId);
 
-  loader(messageDiv);
+    loader(messageDiv);
 
-  // fetch data from server -> bot's response
+    // fetch data from server -> bot's response
   
     try {
       const response = await fetch('https://codex-hdtm.onrender.com', {
